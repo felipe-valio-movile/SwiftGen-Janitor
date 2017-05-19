@@ -106,11 +106,15 @@ public class Analyser {
     private func isAsset(_ asset: Asset, usedInInterfaceContent str: String, afterIndex: String.Index? = nil) -> Bool {
         let afterRange: Range<String.Index> = (afterIndex ?? str.startIndex)..<str.endIndex
         
-        guard let _ = str.range(of: "\"\(asset.name)\"", options: .literal, range: afterRange, locale: nil) else {
-            return false
+        if str.range(of: "\"\(asset.name)\"", options: .literal, range: afterRange, locale: nil) != nil {
+            return true
         }
         
-        return true
+        if str.range(of: "\\\"\(asset.name)\\\"", options: .literal, range: afterRange, locale: nil) != nil {
+            return true
+        }
+        
+        return false
     }
     
     private func isAsset(_ asset: Asset, usedInSourceCodeContent content: String) -> Bool {

@@ -11,8 +11,7 @@ import XCTest
 class AssetsAnalyserTests: XCTestCase {
 
     func testAnalyseAllAssets() {
-//        let projectPath = "/Users/felipe.valio/projetos/vivo-meditacao-ios"
-        let projectPath = "/Users/felipe.valio/projetos/ios/assets-analyser-ios"
+        let projectPath = "/Users/Felipe/projetos/ios/AssetsAnalyser"
         let unusedAssets = Analyser().analyse(projectPath: projectPath, assetClasses: ["Localization", "ImageAsset"]).map {
             "\($0.namespace) \($0.name)"
         }
