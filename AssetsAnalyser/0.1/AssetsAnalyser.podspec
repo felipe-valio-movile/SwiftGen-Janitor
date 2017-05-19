@@ -8,10 +8,10 @@ Pod::Spec.new do |s|
 TODO: Add long description of the pod here.
                        DESC
 
-  s.homepage         = 'https://github.com/felipe.valio@movile.com/AssetsAnalyser'
+  s.homepage         = 'https://github.com/felipebv+github@gmail.com/AssetsAnalyser'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { 'felipe.valio@movile.com' => 'felipe.valio@movile.com' }
+  s.author           = { 'felipebv+github@gmail.com' => 'felipebv+github@gmail.com' }
 
-  s.source = { :http => "https://github.com/Movile/assets-analyser-ios/releases/download/#{s.version}/assets-analyser.zip" }
+  s.source = { :http => "https://github.com/felipebv/AssetsAnalyser/releases/download/#{s.version}/assets-analyser.zip" }
   s.preserve_paths = '*'
 end
