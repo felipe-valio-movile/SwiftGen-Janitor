@@ -89,7 +89,8 @@ public class Analyser {
     
     private func assetsFromFilepaths(_ paths: [(String, String)]) -> [Asset] {
         return paths.reduce([]) { assets, path in
-            return assets + assetsFromFileAt(path.1).map {
+            let fileAssets = imagesFromFile(atPath: path.1) + stringsFromFile(atPath: path.1)
+            return assets + fileAssets.map {
                 return Asset(namespace: path.0, name: $0)
             }
         }
@@ -155,7 +156,7 @@ public class Analyser {
         return previousWord == asset.namespace || !previousWord.isAlphanumeric
     }
     
-    private func assetsFromFileAt(_ path: String) -> [String] {
+    private func imagesFromFile(atPath path: String) -> [String] {
         guard let str = fileHelper.openFileAt(path) else {
             return []
         }
@@ -169,6 +170,30 @@ public class Analyser {
         let enumCases: [String] = caseLines.flatMap { caseLine in
             return caseLine
                 .replacingOccurrences(of: " case ", with: "")
+                .replacingOccurrences(of: "`", with: "")
+                .components(separatedBy: "=").first?
+                .components(separatedBy: "(").first?
+                .trimmingCharacters(in: CharacterSet.whitespaces)
+        }
+        
+        return enumCases
+    }
+
+    private func stringsFromFile(atPath path: String) -> [String] {
+        guard let str = fileHelper.openFileAt(path) else {
+            return []
+        }
+        
+        let lines = str.components(separatedBy: "\n")
+        
+        let caseLines = lines.filter { line in
+            // "    static let aboutText = Localization.tr(\"Localizable\", \"ABOUT_TEXT\")"
+            return (line.contains(" case ") && !line.contains(":")) || line.contains("static let ")
+        }
+        
+        let enumCases: [String] = caseLines.flatMap { caseLine in
+            return caseLine
+                .replacingOccurrences(of: "static let ", with: "")
                 .replacingOccurrences(of: "`", with: "")
                 .components(separatedBy: "=").first?
                 .components(separatedBy: "(").first?

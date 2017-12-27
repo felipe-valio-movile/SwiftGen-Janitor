@@ -12,18 +12,15 @@ class ExampleCode {
 
     func doNothing() {
         _ = Localization.journeyPopup("banana", "carambola")
-        _ = Localization.journeyPopup("banana", "carambola").string
-        _ = Localization.aboutSatyanatha.string
         _ = Localization.aboutSatyanatha
         _ = Localization.reminderTime
         _ = ImageAsset.btnPlayer.image
         _ = ImageAsset.btnPlayer
-        let _: Localization = .connectionError
-        
-        self.embeddedVideoAbout()
+
+        self.begin()
     }
     
-    func embeddedVideoAbout() {
+    func begin() {
         // decoy method
     }
 }
