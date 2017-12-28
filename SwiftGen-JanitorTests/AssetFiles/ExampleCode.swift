@@ -14,8 +14,8 @@ class ExampleCode {
         _ = Localization.journeyPopup("banana", "carambola")
         _ = Localization.aboutSatyanatha
         _ = Localization.reminderTime
-        _ = ImageAsset.btnPlayer.image
-        _ = ImageAsset.btnPlayer
+        _ = Asset.btnPlayer.image
+        _ = Asset.btnPlayer
 
         self.begin()
     }

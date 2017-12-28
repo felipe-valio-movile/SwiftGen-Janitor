@@ -11,8 +11,8 @@ import XCTest
 class AssetsAnalyserTests: XCTestCase {
 
     func testAnalyseAllAssets() {
-        let projectPath = "/Users/felipe.valio/projetos/ios/AssetsAnalyser"
-        let unusedAssets = Analyser().analyse(projectPath: projectPath, assetClasses: ["Localization", "ImageAsset"]).map {
+        let projectPath = "/Users/felipe.valio/projetos/ios/SwiftGen-Janitor"
+        let unusedAssets = Analyser().analyse(projectPath: projectPath, stringsFilename: "Localization", imagesFilename: "ImageAsset").map {
             "\($0.namespace) \($0.name)"
         }
         
@@ -21,13 +21,13 @@ class AssetsAnalyserTests: XCTestCase {
         XCTAssertFalse(unusedAssets.contains("Localization journeyPopup"))
         XCTAssertFalse(unusedAssets.contains("Localization aboutSatyanatha"))
         XCTAssertFalse(unusedAssets.contains("Localization reminderTime"))
-        XCTAssertFalse(unusedAssets.contains("ImageAsset btnPlayer"))
-        XCTAssertFalse(unusedAssets.contains("ImageAsset ilustrTime"))
+        XCTAssertFalse(unusedAssets.contains("Asset btnPlayer"))
+        XCTAssertFalse(unusedAssets.contains("Asset ilustrTime"))
 
         XCTAssertTrue(unusedAssets.contains("Localization changeTime"))
         XCTAssertTrue(unusedAssets.contains("Localization reminder"))
         XCTAssertTrue(unusedAssets.contains("Localization begin"))
-        XCTAssertTrue(unusedAssets.contains("ImageAsset ilustrCatMomentos"))
+        XCTAssertTrue(unusedAssets.contains("Asset Categories.ilustrCatMomentos"))
         
         unusedAssets.forEach {
             print("\($0)")

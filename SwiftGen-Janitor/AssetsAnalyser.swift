@@ -8,7 +8,7 @@
 
 import Cocoa
 
-struct Asset: Equatable {
+struct SwiftGenAsset: Equatable {
     let namespace: String
     let name: String
     
@@ -16,7 +16,7 @@ struct Asset: Equatable {
         return "\(namespace).\(name)"
     }
     
-    static func ==(lhs: Asset, rhs: Asset) -> Bool {
+    static func ==(lhs: SwiftGenAsset, rhs: SwiftGenAsset) -> Bool {
         return lhs.compound == rhs.compound
     }
 }
@@ -24,17 +24,17 @@ struct Asset: Equatable {
 public class Analyser {
     private let fileHelper = FileHelper()
     
-    func analyse(projectPath: String, assetClasses: [String]) -> [Asset] {
+    func analyse(projectPath: String, stringsFilename: String? = nil, imagesFilename: String? = nil) -> [SwiftGenAsset] {
         let startTime = Date().timeIntervalSince1970
         
         defer {
             print("Time to analyse assets: \(Date().timeIntervalSince1970 - startTime)")
         }
         
-        let assetPaths = pathOfAssetFilesIn(projectPath: projectPath, assetClasses: assetClasses)
-        
-        let assets = assetsFromFilepaths(assetPaths)
-        
+        let assets = self.assets(inProjectPath: projectPath, stringsFilename: stringsFilename, imagesFilename: imagesFilename)
+
+        let assetPaths = pathOfAssetFilesIn(projectPath: projectPath, stringsFilename: stringsFilename, imagesFilename: imagesFilename)
+
         let sourceCodePaths = fileHelper.exclude(paths: assetPaths.map {$0.1}, fromPaths: fileHelper.sourceCodesAt(projectPath: projectPath))
         
         let unusedAssetsInSourceCode = unusedAssetsInSourceCodePaths(sourceCodePaths, assets: assets)
@@ -47,8 +47,44 @@ public class Analyser {
         return unusedAssets
     }
     
+    private func pathOfAssetFilesIn(projectPath: String, stringsFilename: String? = nil, imagesFilename: String? = nil) -> [(String, String)] {
+        let stringsPath = stringsFilename.flatMap { asset in
+            return fileHelper.filepathsEndingWith("\(asset).swift", inPath: projectPath).first.flatMap {
+                return (asset, $0)
+            }
+        }
+        
+        let imagesPath = stringsFilename.flatMap { asset in
+            return fileHelper.filepathsEndingWith("\(asset).swift", inPath: projectPath).first.flatMap {
+                return (asset, $0)
+            }
+        }
+        
+        return [stringsPath, imagesPath].flatMap { $0 }
+    }
+
+    private func assets(inProjectPath projectPath: String, stringsFilename: String? = nil, imagesFilename: String? = nil) -> [SwiftGenAsset] {
+        var stringAssets: [SwiftGenAsset] = []
+        var imageAssets: [SwiftGenAsset] = []
+        
+        if let stringsFilename = stringsFilename {
+            if let stringsPath = pathOfAssetFile(inProjectPath: projectPath, asset: stringsFilename) {
+                stringAssets = stringsFromFile(atPath: stringsPath.1).map {
+                    return SwiftGenAsset(namespace: stringsPath.0, name: $0)
+                }
+            }
+        }
+
+        if let imagesFilename = imagesFilename {
+            if let imagesPath = pathOfAssetFile(inProjectPath: projectPath, asset: imagesFilename) {
+                imageAssets = imageAssetsFromFile(atPath: imagesPath.1)
+            }
+        }
+        
+        return imageAssets + stringAssets
+    }
     
-    private func unusedAssetsInSourceCodePaths(_ sourceCodePaths: [String], assets: [Asset]) -> [Asset] {
+    private func unusedAssetsInSourceCodePaths(_ sourceCodePaths: [String], assets: [SwiftGenAsset]) -> [SwiftGenAsset] {
         var assets = assets
         sourceCodePaths.forEach { sourceCodePath in
             guard let fileContent = fileHelper.openFileAt(sourceCodePath) else {
@@ -56,6 +92,10 @@ public class Analyser {
             }
             let currentAssets = assets
             currentAssets.forEach { asset in
+                if asset.name == "btnPlayer" {
+                    print(sourceCodePath)
+                    print()
+                }
                 if isAsset(asset, usedInSourceCodeContent: fileContent) {
                     assets = assets.filter {$0 != asset}
                 }
@@ -65,7 +105,7 @@ public class Analyser {
         return assets
     }
 
-    private func unusedAssetsInInterfaceFilesAt(projectPath: String, assets: [Asset]) -> [Asset] {
+    private func unusedAssetsInInterfaceFilesAt(projectPath: String, assets: [SwiftGenAsset]) -> [SwiftGenAsset] {
         let xibPaths = fileHelper.filepathsEndingWith(".xib", inPath: projectPath)
         let storyboardPaths = fileHelper.filepathsEndingWith(".storyboard", inPath: projectPath)
         
@@ -87,24 +127,13 @@ public class Analyser {
         return assets
     }
     
-    private func assetsFromFilepaths(_ paths: [(String, String)]) -> [Asset] {
-        return paths.reduce([]) { assets, path in
-            let fileAssets = imagesFromFile(atPath: path.1) + stringsFromFile(atPath: path.1)
-            return assets + fileAssets.map {
-                return Asset(namespace: path.0, name: $0)
-            }
-        }
-    }
-    
-    private func pathOfAssetFilesIn(projectPath: String, assetClasses: [String]) -> [(String, String)] {
-        return assetClasses.flatMap { asset in
-            return fileHelper.filepathsEndingWith("\(asset).swift", inPath: projectPath).first.flatMap {
-                return (asset, $0)
-            }
+    private func pathOfAssetFile(inProjectPath projectPath: String, asset: String) -> (String, String)? {
+        return fileHelper.filepathsEndingWith("\(asset).swift", inPath: projectPath).first.flatMap {
+            return (asset, $0)
         }
     }
 
-    private func isAsset(_ asset: Asset, usedInInterfaceContent str: String, afterIndex: String.Index? = nil) -> Bool {
+    private func isAsset(_ asset: SwiftGenAsset, usedInInterfaceContent str: String, afterIndex: String.Index? = nil) -> Bool {
         let afterRange: Range<String.Index> = (afterIndex ?? str.startIndex)..<str.endIndex
         
         if str.range(of: "\"\(asset.name)\"", options: .literal, range: afterRange, locale: nil) != nil {
@@ -118,11 +147,11 @@ public class Analyser {
         return false
     }
     
-    private func isAsset(_ asset: Asset, usedInSourceCodeContent content: String) -> Bool {
+    private func isAsset(_ asset: SwiftGenAsset, usedInSourceCodeContent content: String) -> Bool {
         return existsAsset(asset, inString: content)
     }
     
-    private func existsAsset(_ asset: Asset, inString str: String, afterIndex: String.Index? = nil) -> Bool {
+    private func existsAsset(_ asset: SwiftGenAsset, inString str: String, afterIndex: String.Index? = nil) -> Bool {
         let afterRange: Range<String.Index> = (afterIndex ?? str.startIndex)..<str.endIndex
         
         guard let range = str.range(of: ".\(asset.name)", options: .literal, range: afterRange, locale: nil) else {
@@ -136,7 +165,7 @@ public class Analyser {
         }
     }
     
-    private func isUsedAsset(_ asset: Asset, inString str: String, atRange range: Range<String.Index>) -> Bool {
+    private func isUsedAsset(_ asset: SwiftGenAsset, inString str: String, atRange range: Range<String.Index>) -> Bool {
         let nextCharacter = String(str[range.upperBound])
         
         guard !nextCharacter.isAlphanumeric else {
@@ -156,27 +185,28 @@ public class Analyser {
         return previousWord == asset.namespace || !previousWord.isAlphanumeric
     }
     
-    private func imagesFromFile(atPath path: String) -> [String] {
+    private func imageAssetsFromFile(atPath path: String) -> [SwiftGenAsset] {
         guard let str = fileHelper.openFileAt(path) else {
             return []
         }
         
-        let lines = str.components(separatedBy: "\n")
+        let imageLines = str.string(after: "static let allImages: [ImageAsset] = [", before: "]")
         
-        let caseLines = lines.filter { line in
-            return line.contains(" case ") && !line.contains(":")
+        let lines: [String] = imageLines.components(separatedBy: "\n")
+        
+        let sanitizedLines: [String] = lines.map { line in
+            return line
+                .trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+                .replacingOccurrences(of: ",", with: "")
         }
         
-        let enumCases: [String] = caseLines.flatMap { caseLine in
-            return caseLine
-                .replacingOccurrences(of: " case ", with: "")
-                .replacingOccurrences(of: "`", with: "")
-                .components(separatedBy: "=").first?
-                .components(separatedBy: "(").first?
-                .trimmingCharacters(in: CharacterSet.whitespaces)
+        let nonEmptyLines = sanitizedLines.filter {
+            $0.count > 0
         }
         
-        return enumCases
+        return nonEmptyLines.map { image in
+            return SwiftGenAsset(namespace: "Asset", name: image)
+        }
     }
 
     private func stringsFromFile(atPath path: String) -> [String] {

@@ -8,26 +8,22 @@
 
 import Foundation
 
+let projectName = "SwiftGen-Janitor"
+
 guard let arguments = ArgumentsParser().parse(arguments: CommandLine.arguments) else {
-    print("error: [Assets Analyser] Missing parameters")
+    print("error: [\(projectName)] Missing parameters")
     exit(1)
 }
 
 guard let projectPath = arguments["path"] else {
-    print("error: [Assets Analyser] Missing project path parameter")
+    print("error: [\(projectName)] Missing project path parameter")
     exit(1)
 }
 
-guard let assetsRaw = arguments["assets"] else {
-    print("error: [Assets Analyser] Missing assets parameter")
-    exit(1)
-}
+let strings = arguments["strings"]
+let images  = arguments["images"]
 
-let assetsList = assetsRaw.components(separatedBy: ",").map {
-    $0.trimmingCharacters(in: CharacterSet.whitespaces)
-}
-
-let unusedAssets = Analyser().analyse(projectPath: projectPath, assetClasses: assetsList)
+let unusedAssets = Analyser().analyse(projectPath: projectPath, stringsFilename: strings, imagesFilename: images)
 
 if unusedAssets.count == 0 {
     print("All assets are well used \\(^~^)/")
