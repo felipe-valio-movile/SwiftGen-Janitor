@@ -48,7 +48,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		7CB2F9FC1FF41D59000B857A /* SwiftGen-Janitor */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "SwiftGen-Janitor"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7CB2F9FC1FF41D59000B857A /* swiftgen-janitor */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "swiftgen-janitor"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7CB2F9FF1FF41D59000B857A /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		7CB2FA121FF41DD3000B857A /* String+Alphanumeric.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Alphanumeric.swift"; sourceTree = "<group>"; };
 		7CB2FA131FF41DD3000B857A /* Janitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Janitor.swift; sourceTree = "<group>"; };
@@ -70,6 +70,8 @@
 		7CB2FA5C1FF67C77000B857A /* AssetsParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetsParser.swift; sourceTree = "<group>"; };
 		7CB2FA5F1FF685F8000B857A /* AssetsParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetsParserTests.swift; sourceTree = "<group>"; };
 		7CB2FA621FF6AD19000B857A /* ProjectPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPath.swift; sourceTree = "<group>"; };
+		7CB2FA641FF6B5D4000B857A /* SwiftGen-Janitor.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = "SwiftGen-Janitor.podspec"; sourceTree = "<group>"; };
+		7CB2FA661FF6B821000B857A /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +95,8 @@
 		7CB2F9F31FF41D59000B857A = {
 			isa = PBXGroup;
 			children = (
+				7CB2FA641FF6B5D4000B857A /* SwiftGen-Janitor.podspec */,
+				7CB2FA661FF6B821000B857A /* README.md */,
 				7CB2F9FE1FF41D59000B857A /* SwiftGen-Janitor */,
 				7CB2FA371FF52C39000B857A /* SwiftGen-JanitorTests */,
 				7CB2F9FD1FF41D59000B857A /* Products */,
@@ -102,7 +106,7 @@
 		7CB2F9FD1FF41D59000B857A /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				7CB2F9FC1FF41D59000B857A /* SwiftGen-Janitor */,
+				7CB2F9FC1FF41D59000B857A /* swiftgen-janitor */,
 				7CB2FA361FF52C39000B857A /* SwiftGen-JanitorTests.xctest */,
 			);
 			name = Products;
@@ -157,7 +161,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7CB2FA031FF41D59000B857A /* Build configuration list for PBXNativeTarget "SwiftGen-Janitor" */;
 			buildPhases = (
-				7CB2FA611FF6ACD9000B857A /* Update project path */,
 				7CB2F9F81FF41D59000B857A /* Sources */,
 				7CB2F9F91FF41D59000B857A /* Frameworks */,
 				7CB2F9FA1FF41D59000B857A /* CopyFiles */,
@@ -168,7 +171,7 @@
 			);
 			name = "SwiftGen-Janitor";
 			productName = "SwiftGen-Janitor";
-			productReference = 7CB2F9FC1FF41D59000B857A /* SwiftGen-Janitor */;
+			productReference = 7CB2F9FC1FF41D59000B857A /* swiftgen-janitor */;
 			productType = "com.apple.product-type.tool";
 		};
 		7CB2FA351FF52C39000B857A /* SwiftGen-JanitorTests */ = {
@@ -178,6 +181,7 @@
 				7CB2FA321FF52C39000B857A /* Sources */,
 				7CB2FA331FF52C39000B857A /* Frameworks */,
 				7CB2FA341FF52C39000B857A /* Resources */,
+				7CB2FA651FF6B6C2000B857A /* Update project path */,
 			);
 			buildRules = (
 			);
@@ -238,7 +242,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		7CB2FA611FF6ACD9000B857A /* Update project path */ = {
+		7CB2FA651FF6B6C2000B857A /* Update project path */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -408,7 +412,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "swiftgen-janitor";
 				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
@@ -417,7 +421,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "swiftgen-janitor";
 				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
