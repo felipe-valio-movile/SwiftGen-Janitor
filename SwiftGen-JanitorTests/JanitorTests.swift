@@ -11,7 +11,6 @@ import XCTest
 class JanitorTests: XCTestCase {
 
     func testAnalyseAllAssets() {
-        let projectPath = "/Users/felipe.valio/projetos/ios/SwiftGen-Janitor"
         let unusedAssets = Janitor().analyse(projectPath: projectPath, stringsFilename: "Localization", imagesFilename: "ImageAsset").map {
             "\($0.namespace) \($0.name)"
         }

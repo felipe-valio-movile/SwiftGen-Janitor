@@ -11,7 +11,7 @@ import XCTest
 class AssetsParserTests: XCTestCase {
 
     func testParseAssets() {
-        let assets = AssetsParser().parseAssets(fromFile: "/Users/felipe.valio/projetos/ios/SwiftGen-Janitor/SwiftGen-JanitorTests/AssetFiles/ImageAsset.swift")
+        let assets = AssetsParser().parseAssets(fromFile: "\(projectPath)/SwiftGen-JanitorTests/AssetFiles/ImageAsset.swift")
         
         XCTAssertNotNil(assets)
         XCTAssertEqual(assets?.enumName, "Asset")

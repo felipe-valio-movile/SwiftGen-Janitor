@@ -44,3 +44,5 @@ R.generated.swift
 *.xcuserstate
 
 *.xcbkptlist
+
+SwiftGen-JanitorTests/ProjectPath.swift

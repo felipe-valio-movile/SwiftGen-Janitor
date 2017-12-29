@@ -11,7 +11,7 @@ import XCTest
 class StringsParserTests: XCTestCase {
 
     func testParseStrings() {
-        let strings = StringsParser().parseStrings(fromFile: "/Users/felipe.valio/projetos/ios/SwiftGen-Janitor/SwiftGen-JanitorTests/AssetFiles/Localization.swift")
+        let strings = StringsParser().parseStrings(fromFile: "\(projectPath)/SwiftGen-JanitorTests/AssetFiles/Localization.swift")
         
         XCTAssertNotNil(strings)
         XCTAssertEqual(strings?.enumName, "Localization")
