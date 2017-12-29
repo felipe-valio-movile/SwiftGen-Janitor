@@ -1,6 +1,6 @@
 //
 //  StringWordTests.swift
-//  AssetsAnalyser
+//  SwiftGen-Janitor
 //
 //  Created by Felipe Braunger Valio on 16/05/17.
 //  Copyright © 2017 Movile. All rights reserved.

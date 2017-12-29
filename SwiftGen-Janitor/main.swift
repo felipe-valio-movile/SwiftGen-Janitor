@@ -1,6 +1,6 @@
 //
 //  main.swift
-//  AssetsAnalyser
+//  SwiftGen-Janitor
 //
 //  Created by Felipe Braunger Valio on 28/04/17.
 //  Copyright © 2017 Movile. All rights reserved.
@@ -23,7 +23,7 @@ guard let projectPath = arguments["path"] else {
 let strings = arguments["strings"]
 let images  = arguments["images"]
 
-let unusedAssets = Analyser().analyse(projectPath: projectPath, stringsFilename: strings, imagesFilename: images)
+let unusedAssets = Janitor().analyse(projectPath: projectPath, stringsFilename: strings, imagesFilename: images)
 
 if unusedAssets.count == 0 {
     print("All assets are well used \\(^~^)/")

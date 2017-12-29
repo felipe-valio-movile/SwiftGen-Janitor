@@ -1,6 +1,6 @@
 //
-//  AssetsAnalyserTests.swift
-//  AssetsAnalyserTests
+//  JanitorTests.swift
+//  SwiftGen-JanitorTests
 //
 //  Created by Felipe Braunger Valio on 28/04/17.
 //  Copyright © 2017 Movile. All rights reserved.
@@ -8,11 +8,11 @@
 
 import XCTest
 
-class AssetsAnalyserTests: XCTestCase {
+class JanitorTests: XCTestCase {
 
     func testAnalyseAllAssets() {
         let projectPath = "/Users/felipe.valio/projetos/ios/SwiftGen-Janitor"
-        let unusedAssets = Analyser().analyse(projectPath: projectPath, stringsFilename: "Localization", imagesFilename: "ImageAsset").map {
+        let unusedAssets = Janitor().analyse(projectPath: projectPath, stringsFilename: "Localization", imagesFilename: "ImageAsset").map {
             "\($0.namespace) \($0.name)"
         }
         
