@@ -12,23 +12,15 @@ Add a new pod and run `pod install`
 pod 'SwiftGen-Janitor'
 ```
 
-### Install manually
-
-1. Open the Xcode project
-2. Build it
-3. Open the directory `Products` in the *Project navigator*
-4. Find the binary `swiftgen-janitor`
-5. Copy it to any directory inside your project. Let's say, `tools/swiftgen-janitor`.
-
 ## Usage
 
-In your target project, add a **Run Script Phase** in **Build Phases**, with the following content:
+In your target project go to **Build Phases** and add a **Run Script Phase** with the following content:
 
 ```sh
-$PODS_ROOT/SwiftGen-Janitor/swiftgen-janitor -strings Localization -assets ImageAssets
+$PODS_ROOT/SwiftGen-Janitor/swiftgen-janitor -path $SRCROOT -strings Localization -assets ImageAssets
 ```
 
-So, the tool will search by any unused strings and images in your code.
+Where `Localization` is your strings filename and `ImageAssets` is your assets filename. The tool will read these files and search by any unused strings and images in your code.
 
 ## Credits
 
