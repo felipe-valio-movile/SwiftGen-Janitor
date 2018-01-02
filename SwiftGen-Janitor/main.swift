@@ -23,6 +23,11 @@ guard let projectPath = arguments["path"] else {
 let strings = arguments["strings"]
 let images  = arguments["images"]
 
+if strings == nil && images == nil {
+    print("error: [\(projectName)] Missing asset types. Try '-strings localization-filename' or '-images images-filename'")
+    exit(1)
+}
+
 let unusedAssets = Janitor().analyse(projectPath: projectPath, stringsFilename: strings, imagesFilename: images)
 
 if unusedAssets.count == 0 {
