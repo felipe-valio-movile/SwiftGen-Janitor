@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'SwiftGen-Janitor'
-  s.version          = '0.2.0'
+  s.version          = '0.2.1'
   s.summary          = 'A command line tool to search your iOS project by unused assets'
 
   s.description      = <<-DESC
