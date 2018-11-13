@@ -49,7 +49,7 @@ class AssetsParser {
     private func allItems(fromContent content: String) -> [String] {
         let imageLines = content.components(separatedBy: "\n")
         
-        let images: [String] = imageLines.flatMap { line in
+        let images: [String] = imageLines.compactMap { line in
             let sanitized = line
                 .trimmingCharacters(in: CharacterSet.whitespaces)
                 .replacingOccurrences(of: ",", with: "")

@@ -36,7 +36,7 @@ public class Janitor {
 
         let assets = self.assets(fromStringsFilepath: stringsPath, imagesFilepath: imagesPath)
         
-        let assetPaths: [String] = [stringsPath, imagesPath].flatMap { $0 }
+        let assetPaths: [String] = [stringsPath, imagesPath].compactMap { $0 }
 
         let sourceCodePaths = fileHelper.exclude(paths: assetPaths, fromPaths: fileHelper.sourceCodesAt(projectPath: projectPath))
         

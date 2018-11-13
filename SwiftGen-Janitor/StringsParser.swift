@@ -30,7 +30,7 @@ class StringsParser {
             return line.contains("static let") || line.contains("static func")
         }
         
-        let strings: [String] = enumItems.flatMap { item in
+        let strings: [String] = enumItems.compactMap { item in
             return string(fromEnumItem: item)
         }
         
@@ -40,7 +40,7 @@ class StringsParser {
     }
     
     private func enumName(fromFileContent fileContent: String) -> String {
-        return fileContent.string(after: "\nenum ", before: " {")
+        return fileContent.string(after: "enum ", before: " {")
     }
     
     private func string(fromEnumItem item: String) -> String? {
